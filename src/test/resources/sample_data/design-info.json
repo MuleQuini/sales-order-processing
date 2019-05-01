@@ -1,0 +1,31 @@
+{
+  "sampleData": {
+    "e30652ae-9a81-4bae-a5c4-f27c576d05f3": {
+      "payload": "sample_data/list_json.json"
+    },
+    "b22d4ea7-f12d-40da-bd7b-a2e9ac10e9ed": {
+      "payload": "sample_data/json.json"
+    },
+    "982055f2-98cf-4da9-a653-fe1958a5bcd5": {
+      "payload": "sample_data/json_1.json",
+      "vars-Total_Services_cost": "sample_data/unknown.dwl",
+      "vars-Total_Items_cost": "sample_data/unknown_1.dwl"
+    },
+    "1cd83387-4fec-4ad7-ac7e-b423317cc5b1": {
+      "payload": "sample_data/list_unknown_1.csv",
+      "attributes": "sample_data/list_unknown.csv"
+    },
+    "effb2d3b-e535-46fa-926c-e201e7cf89ad": {
+      "payload": "sample_data/list_unknown_2.csv"
+    },
+    "6c81fa75-0149-4a99-bd22-017658c418fa": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "2d0a1028-588d-4c8a-9dae-c9f6c72ff9d7": {
+      "payload": "sample_data/object.dwl"
+    },
+    "f93fc851-500d-4816-a1c8-48bbeb9fbdfb": {
+      "payload": "sample_data/list_json_2.json"
+    }
+  }
+}

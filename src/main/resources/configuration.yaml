@@ -1,0 +1,23 @@
+http:
+  host: "0.0.0.0" 
+  port: "8081"
+  
+router:
+  file: "sales-order-processing.raml"
+  headers: "outboundHeaders"
+  status: "httpStatus"
+  
+vm:
+  queue: "process"
+  
+shipping:
+  path: "/mocks/32f2e6af-f83d-42eb-a832-f2eb0179e1f1"
+  protocol: "HTTPS"
+  host: "mocksvc.mulesoft.com"
+  
+scheduler:  
+  path: "/mocks/3f7ddde1-e2d5-446d-8c38-d1ddc9ea92e3"
+  protocol: "HTTPS"
+  host: "mocksvc.mulesoft.com"
+  
+

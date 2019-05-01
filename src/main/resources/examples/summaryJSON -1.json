@@ -1,0 +1,8 @@
+{
+ "CustomerName" : "Ricardo",
+ "CustomerID" : "230591",
+ "SalesOrderNumber" : "12345",
+ "TotalCost" : 30,
+ "TotalItemCost" : 10,
+ "TotalServicesCost" : 20 
+}

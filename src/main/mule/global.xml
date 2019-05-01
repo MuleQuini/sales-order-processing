@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="40ca3736-da4f-443b-871a-616fcc22c9f0" file="configuration.yaml" />
+	
+	<http:listener-config name="sales-order-processing-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="sales-order-processing-config" raml="${router.file}" outboundHeadersMapName="${router.headers}" httpStatusVarName="${router.status}" />
+		<vm:config name="VM_Config_1" doc:name="VM Config" doc:id="b8fbf130-d75d-4af1-b2a0-a22186dceec1">
+		<vm:queues >
+			<vm:queue queueName="${vm.queue}" />
+		</vm:queues>
+	</vm:config>
+		<http:request-config name="HTTP_Request_configuration_Shipping" doc:name="HTTP Request configuration" doc:id="9de9c887-bd4d-4e24-a2e5-9eba97320bf1" basePath="${shipping.path}">
+		<http:request-connection host="${shipping.host}" protocol="${shipping.protocol}"/>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_configuration_Scheduler" doc:name="HTTP Request configuration" doc:id="291a8743-3d95-4d11-9087-38b6c6701056" basePath="${scheduler.path}">
+		<http:request-connection protocol="${scheduler.protocol}" host="${scheduler.host}" />
+
+	</http:request-config>
+
+</mule>

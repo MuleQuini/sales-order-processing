@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="processing-test-suite.xml" />
+	<munit:test name="processing-test-suite-processingTest" description="Test" doc:id="578bbf08-35cb-4d7a-9ac6-5a6c3d480783" >
+		<munit:execution >
+			<ee:transform doc:name="Transform Message" doc:id="c75229e5-eb44-4b05-9af4-75142662ea38" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "CustomerID": 230591,
+  "CustomerName": "Ricardo",
+  "SalesOrderNumber": 12345,
+  "items": [
+    {
+      "Description": "lollipop",
+      "ItemNumber": 1,
+      "Price": 10,
+      "Quantity": 5,
+      "Type": "item"
+    },
+    {
+      "Description": "water",
+      "ItemNumber": 2,
+      "Price": 20,
+      "Quantity": 10,
+      "Type": "service"
+    }
+  ]
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit:set-event doc:name="Set Event" doc:id="d4791492-387f-4332-ae9c-f4641c1207f3" >
+				<munit:payload value="#[payload]" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to processing" doc:id="d2021e99-f512-4d2d-97e2-efe6a4a06270" name="processing"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f2440dea-8d2b-4c3a-96fd-5c779336a58d" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="processing-test-suite-processingDataTest" description="Test" doc:id="a3644179-b780-484c-a2f9-374c30beca7a" >
+		<munit:execution >
+			<ee:transform doc:name="Transform Message" doc:id="202b6622-3eeb-4e7a-821a-077c86af836c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "CustomerID": 230591,
+  "CustomerName": "Ricardo",
+  "SalesOrderNumber": 12345,
+  "items": [
+    {
+      "Description": "lollipop",
+      "ItemNumber": 1,
+      "Price": 10,
+      "Quantity": 5,
+      "Type": "item"
+    },
+    {
+      "Description": "water",
+      "ItemNumber": 2,
+      "Price": 20,
+      "Quantity": 10,
+      "Type": "service"
+    }
+  ]
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<munit:set-event doc:name="Set Event" doc:id="479c9db3-94a7-4f52-a6f2-dee19306d499" >
+				<munit:payload value="#[payload]" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to processingData" doc:id="974772c0-a6f8-4e9b-b3d0-96550c793296" name="processingData" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="fbff69e5-40a3-45c5-9732-9cc30e8efa60" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

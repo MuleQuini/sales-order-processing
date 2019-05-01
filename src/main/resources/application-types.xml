@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="orderCSV" format="csv">
+      <types:shape format="weave" example="examples/orderCVS-1.csv"><![CDATA[%dw 2.0
+type orderCSV = Array<{|
+  CustomerID: String, 
+  CustomerName: String, 
+  SalesOrderNumber: String, 
+  " Description": String, 
+  " ItemNumber": String, 
+  Price: String, 
+  Quantity: String, 
+  Type: String
+|}> {"MetadataFormat": "csv"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="orderJSON" format="json">
+      <types:shape format="weave" example="examples/orderJSON-1.json"><![CDATA[%dw 2.0
+type orderJSON = {|
+  CustomerID: Number {"typeId": "int"}, 
+  CustomerName: String, 
+  SalesOrderNumber: Number {"typeId": "int"}, 
+  items: Array<{|
+    Description: String, 
+    ItemNumber: Number {"typeId": "int"}, 
+    Price: Number {"typeId": "int"}, 
+    Quantity: Number {"typeId": "int"}, 
+    Type: String
+  |}>
+|} {"MetadataFormat": "json",
+"example": "{\"CustomerID\":230591,\"CustomerName\":\"Ricardo\",\"SalesOrderNumber\":12345,\"items\":[{\"Description\":\"lollipop\",\"ItemNumber\":1,\"Price\":10,\"Quantity\":5,\"Type\":\"item\"},{\"Description\":\"water\",\"ItemNumber\":2,\"Price\":20,\"Quantity\":10,\"Type\":\"service\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="order-JSONtoJSON" format="json">
+      <types:shape format="weave" example="examples/order-JSONtoJSON-1.json"><![CDATA[%dw 2.0
+type order_JSONtoJSON = Array<{|
+  CustomerName: String, 
+  CustomerID: String, 
+  SalesOrderNumber: String, 
+  Description: String, 
+  ItemNumber: String, 
+  Price: String, 
+  Quantity: String, 
+  Type: String
+|}> {"MetadataFormat": "json",
+"example": "[{\"CustomerName\":\"Ricardo\",\"CustomerID\":\"230591\",\"SalesOrderNumber\":\"12345\",\"Description\":\"lollipop\",\"ItemNumber\":\"1\",\"Price\":\"10\",\"Quantity\":\"5\",\"Type\":\"item\"},{\"CustomerName\":\"Ricardo\",\"CustomerID\":\"230591\",\"SalesOrderNumber\":\"12345\",\"Description\":\"water\",\"ItemNumber\":\"2\",\"Price\":\"20\",\"Quantity\":\"10\",\"Type\":\"service\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="itemJSON" format="json">
+      <types:shape format="weave" example="examples/itemJSON.json"><![CDATA[%dw 2.0
+type itemJSON = {|
+  customerId: String, 
+  customerName: String, 
+  orderNumber: String, 
+  lines: Array<{|
+    itemNumber: String, 
+    quantity: String, 
+    price: String, 
+    description: String
+  |}>
+|} {"MetadataFormat": "json",
+"example": "{\"customerId\":\"1657\",\"customerName\":\"AVIO Consulting\",\"orderNumber\":\"SO-123456\",\"lines\":[{\"itemNumber\":\"A-1235B\",\"quantity\":\"10\",\"price\":\"940.56\",\"description\":\"Some part I need\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="serviceJSON" format="json">
+      <types:shape format="weave" example="examples/serviceJSON .json"><![CDATA[%dw 2.0
+type serviceJSON = {|
+  customerId: String, 
+  customerName: String, 
+  orderNumber: String, 
+  lines: Array<{|
+    itemNumber: String, 
+    quantity: String, 
+    price: String, 
+    description: String
+  |}>
+|} {"MetadataFormat": "json",
+"example": "{\"customerId\":\"1657\",\"customerName\":\"AVIO Consulting\",\"orderNumber\":\"SO-123456\",\"lines\":[{\"itemNumber\":\"A-1235B\",\"quantity\":\"10\",\"price\":\"940.56\",\"description\":\"Some part I need\"}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="summaryJSON" format="json">
+      <types:shape format="weave" example="examples/summaryJSON -1.json"><![CDATA[%dw 2.0
+type summaryJSON = {|
+  CustomerName: String, 
+  CustomerID: String, 
+  SalesOrderNumber: String, 
+  TotalCost: Number {"typeId": "int"}, 
+  TotalItemCost: Number {"typeId": "int"}, 
+  TotalServicesCost: Number {"typeId": "int"}
+|} {"MetadataFormat": "json",
+"example": "{\"CustomerName\":\"Ricardo\",\"CustomerID\":\"230591\",\"SalesOrderNumber\":\"12345\",\"TotalCost\":30,\"TotalItemCost\":10,\"TotalServicesCost\":20}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#6c81fa75-0149-4a99-bd22-017658c418fa">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="order-JSONtoJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b22d4ea7-f12d-40da-bd7b-a2e9ac10e9ed">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="itemJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#dfbfa55f-d073-473f-ad47-28c4acc8d780">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="serviceJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#982055f2-98cf-4da9-a653-fe1958a5bcd5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="summaryJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#8b960c4b-24e7-4b26-8212-b3dffa7243cd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1cd83387-4fec-4ad7-ac7e-b423317cc5b1">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderCSV"/>
+          <types:attributes type="orderCSV"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#fa464e29-bc0e-4b15-a90c-b6ef2815730a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#effb2d3b-e535-46fa-926c-e201e7cf89ad">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderCSV"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="order-JSONtoJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#f93fc851-500d-4816-a1c8-48bbeb9fbdfb">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="order-JSONtoJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#ae3116d3-8bd4-4e53-91b0-38d483a969e7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderJSON"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2d0a1028-588d-4c8a-9dae-c9f6c72ff9d7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="orderCSV"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="order-JSONtoJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

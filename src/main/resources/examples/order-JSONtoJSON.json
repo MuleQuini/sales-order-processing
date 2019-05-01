@@ -1,0 +1,22 @@
+[
+  {
+    "CustomerName": "Ricardo",
+    "CustomerID": "230591",
+    "SalesOrderNumber": "12345",
+    " Description": "lollipop",
+    " ItemNumber": "1",
+    "Price": "10",
+    "Quantity": "5",
+    "Type": "item"
+  },
+  {
+    "CustomerName": "Ricardo",
+    "CustomerID": "230591",
+    "SalesOrderNumber": "12345",
+    " Description": "water",
+    " ItemNumber": "2",
+    "Price": "20",
+    "Quantity": "10",
+    "Type": "service"
+  }
+]
